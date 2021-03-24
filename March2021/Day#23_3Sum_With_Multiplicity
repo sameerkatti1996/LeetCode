@@ -1,0 +1,95 @@
+class Solution {
+public:
+    static long comb(long n, long r)
+    {
+        //nCr is 1 is n == r
+        //Else: n*(n-1)*....*(n-r+1)/r!
+        if(n == r)
+            return 1;
+        
+        long num = 1, deno = 1;
+        
+        for(long i=n; i>n-r; i--)
+        {
+            num *= i;
+        }
+        
+        for(long i=r; i>1; i--)
+        {
+            deno *= i;
+        }
+        
+        return (num/deno)%1000000007;
+    }
+    int threeSumMulti(vector<int>& arr, int target) {
+        sort(arr.begin(), arr.end());
+        map<int, int> nums;
+        int num;
+        long result = 0;
+        
+        //Populate the count of each value in map
+        for(int i=0; i<arr.size(); i++)
+        {
+            if(nums.find(arr[i]) != nums.end())
+                nums[arr[i]]++;
+            else
+                nums[arr[i]] = 1;
+        }
+        
+        for(int i=0; i<arr.size()-1; i++){
+            //If the number is same is previous, skip it
+            //Computations have already been done
+            if(i > 0)
+            {
+                num = arr[i-1];
+                while(num == arr[i])
+                {
+                    i++;
+                    if(i >= arr.size()-1)
+                    break;
+                }
+            }
+            
+            for(int j=i+1; j<arr.size(); j++)
+            {
+                //Third number
+                num = target - arr[i] - arr[j];
+                
+                if(num < arr[j])
+                    continue;
+                
+                //Is third number present in the list?
+                if(nums.find(num) != nums.end())
+                {
+                    //result will be based on combination (nCr)
+                    //If all three numbers are same, nC3
+                    if(arr[i] == arr[j] && arr[i] == num)
+                        result += comb(nums[arr[i]], 3) ;
+                    //If two of the numbers are same, nC2
+                    else if(arr[i] == arr[j])
+                        result += comb(nums[arr[i]], 2) * nums[num];
+                    else if(arr[i] == num)
+                        result += comb(nums[arr[i]], 2) * nums[arr[j]];
+                    else if(arr[j] == num)
+                        result += comb(nums[arr[j]], 2) * nums[arr[i]];
+                    //If all are different, product of count of each
+                    else
+                        result += nums[arr[i]] * nums[arr[j]] * nums[num];
+                    
+                    result = result % 1000000007;
+                    
+                    //If the number is same is previous, skip it
+                    //Computations have already been done
+                    num = arr[j];
+                    while(arr[j] == num){
+                        j++;
+                    if(j >= arr.size())
+                        break;
+                    }
+                    j--;
+                }
+            }
+        }
+        return result;
+    }
+};

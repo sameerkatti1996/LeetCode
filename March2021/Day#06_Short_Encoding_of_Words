@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool isSuffix(vector<string>& list, string word)
+    {
+        int j, k;
+        for(int i=0; i<list.size(); i++)
+        {   
+            for(j = word.size()-1, k = list[i].size()-1; j >= 0 && k>=0; j--, k--)
+            {
+                if(word[j] != list[i][k])
+                    break;
+            }
+            
+            if(j < 0 || k < 0)
+            {
+                if(k < 0)
+                {
+                    list[i] = word;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    int minimumLengthEncoding(vector<string>& words) {
+        vector<string> distinct;
+        int len = 0;
+        
+        for(int i=0; i<words.size(); i++)
+        {
+            if(!isSuffix(distinct, words[i]))
+            {
+                distinct.push_back(words[i]);
+            }
+        }   
+        
+        for(int j=0; j<distinct.size(); j++)
+        {
+            len += (distinct[j].size() + 1);
+        }
+        
+        return len;
+    }
+};

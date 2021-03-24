@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        //Whether room is visited or not
+        vector<bool> visited(rooms.size(), false);
+        
+        //Rooms for which we have key but haven't visited yet
+        queue<int> rooms_can_visit;
+        
+        //Room 0 is not locked. So, we can visit without any key
+        rooms_can_visit.push(0);
+        
+        //Current room we are at
+        int room;
+        
+        while(rooms_can_visit.size() != 0)
+        {
+            //Get a room for which we have key
+            room = rooms_can_visit.front();
+            rooms_can_visit.pop();
+            
+            //Mark it as visited
+            visited[room] = true;
+            
+            //Collect keys present in the room
+            //If a room is already visited, discard the key
+            for(int i=0; i<rooms[room].size(); i++)
+            {
+                if(visited[rooms[room][i]] == false)
+                    rooms_can_visit.push(rooms[room][i]);
+            }
+        }
+        
+        //Check if all rooms are visited
+        //If any one is not visited, return False
+        //If all are visited, return True
+        for(int i=0; i<visited.size(); i++)
+        {
+            if(visited[i] == false)
+                return false;
+        }
+        return true;
+    }
+};

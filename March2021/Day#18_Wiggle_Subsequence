@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int pos = 1;    //Maximum length of subsequence whose last number > penultimate
+        int neg = 1;    //Maximum length of subsequence whose last number < penultimate
+        for(int i=1; i<nums.size(); i++)
+        {
+            //To increment pos, last subsequence should be neg and add 1
+            //To increment neg, last subsequence should be pos and add 1
+            if(nums[i] > nums[i-1])
+                pos = max(neg + 1, pos);
+            else if(nums[i] < nums[i-1])
+                neg = max(pos + 1, neg);
+        }
+        
+        return max(pos, neg);
+    }
+};

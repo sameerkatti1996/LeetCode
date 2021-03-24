@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool hasAllCodes(string s, int k) {
+        unordered_set<string> codes;
+        
+        //Form a set of all distinct binary codes of k length
+        for(int i=0; i+k<=s.size(); i++)
+        {
+            codes.insert(s.substr(i, k));
+        }
+        
+        //If total distinct codes of length k are equal to 
+        //total number of possible codes of length k
+        //then string has all codes
+        
+        return codes.size() == pow(2, k)? true: false;
+    }
+};

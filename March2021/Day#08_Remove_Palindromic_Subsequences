@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int removePalindromeSub(string s) {
+        //If size of string is 0, return 0
+        if(s.size() == 0)
+            return 0;
+        
+        string str = s;
+        
+        reverse(str.begin(), str.end());
+        
+        //If string is palindrome, return 1
+        if(str == s)
+            return 1;
+        
+        //Else return 2 for all other cases
+        //Since only two characters are contained, if you remove all
+        //a's from string, then only b's remain which can be removed in next step
+        return 2;
+    }
+};

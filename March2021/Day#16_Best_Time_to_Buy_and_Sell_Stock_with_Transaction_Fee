@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int purchase = -prices[0];        //Profit you have if you purchase/hold
+        int sell = 0;                     //Profit you have if you sell/hold
+        
+        //On a given day, we can either purchase, sell or hold
+        
+        for(int i=1; i<prices.size(); i++)
+        {
+            //Maximum of current sell value and sell value if you sell today
+            sell = max(sell, purchase+prices[i]-fee);
+            
+            //Maximum of current purchase value and purchase value if you sell today
+            purchase = max(purchase, sell-prices[i]);
+        }
+        return max(sell, purchase);
+        
+    }
+};

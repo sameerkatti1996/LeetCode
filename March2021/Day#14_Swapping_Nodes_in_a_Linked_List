@@ -1,0 +1,103 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapNodes(ListNode* head, int k) {
+        ListNode *temp, *first, *first_prev = NULL, *second, *second_prev = NULL;
+        int len = 0;
+        
+        temp = head;
+        
+        while(temp != NULL)
+        {
+            len++;
+            temp = temp->next;
+        }
+        
+        if(len < k)
+        {
+            return head;
+        }
+        
+        temp = head;
+        for(int i = 1; i < k; i++)
+        {
+            first_prev = temp;
+            temp = temp->next;
+        }
+        first = temp;
+        
+        temp = head;
+        for(int i = 1; i < len-k+1; i++)
+        {
+            second_prev = temp;
+            temp = temp->next;
+        }
+        second = temp;
+        
+        //cout << first->val << "  " << second->val << endl;
+        
+        if(first == second)
+        {
+            return head;
+        }
+        if(first->next == second)
+        {
+            if(first_prev)
+                    first_prev->next = second;
+            temp = second->next;
+            second->next = first;
+            first->next = temp;
+            if(first == head)
+                head = second;
+            return head;
+        }
+        if(second->next == first)
+        {
+            if(second_prev)
+                second_prev->next = first;
+            temp = first->next;
+            first->next = second;
+            second->next = temp;
+            if(second == head)
+                head = first;
+            return head;
+        }
+        if(k == 1)
+        {
+            head = second;
+            second->next = first->next;
+            second_prev->next = first;
+            first->next = NULL;
+            return head;
+        }
+        if(k == len)
+        {
+            head = first;
+            first->next = second->next;
+            first_prev->next = second;
+            second->next = NULL;
+            return head;
+        }
+        if(first == head)
+            head = second;
+        if(second == head)
+            head == first;
+        
+        first_prev->next = second;
+        temp = second->next;
+        second->next = first->next;
+        second_prev->next = first;
+        first->next = temp;
+        
+        return head;
+    }
+};

@@ -1,0 +1,23 @@
+//LOGIC:
+//===============================
+//A number can be rearranged to form a perfect square if the sorted order of the digits 
+//matches sorted order of digits of any perfect square.
+
+class Solution {
+public:
+    bool reorderedPowerOf2(int N) {
+        string num = to_string(N);
+        sort(num.begin(), num.end());
+        
+        string num2;
+        for(int i=0; i<30; i++)
+        {
+            num2 = to_string((int)pow(2, i));
+            sort(num2.begin(), num2.end());
+            
+            if(num == num2)
+                return true;
+        }
+        return false;
+    }
+};

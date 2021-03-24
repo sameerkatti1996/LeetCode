@@ -1,0 +1,27 @@
+class Solution {
+public:
+    Solution(double radius, double x_center, double y_center) {
+        this->radius = radius;
+        this->x_center = x_center;
+        this->y_center = y_center;
+    }
+    
+    vector<double> randPoint() {
+        //Condition for point to be in circle
+        //(x - x_center)^2 + (y - y_center)^2 < radius^2
+        double ang = (double)rand() / RAND_MAX * 2 * M_PI,
+        hyp = sqrt((double)rand() / RAND_MAX) * this->radius,
+        adj = cos(ang) * hyp,
+        opp = sin(ang) * hyp;
+        return vector<double>{this->x_center + adj, this->y_center + opp};
+    }
+    
+    double radius, x_center, y_center;
+
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(radius, x_center, y_center);
+ * vector<double> param_1 = obj->randPoint();
+ */

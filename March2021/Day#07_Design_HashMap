@@ -1,0 +1,42 @@
+class MyHashMap {
+public:
+    map<int, int> hashMap;
+    /** Initialize your data structure here. */
+    MyHashMap() {
+        hashMap = {};
+    }
+    
+    /** value will always be non-negative. */
+    void put(int key, int value) {
+        if(this->get(key) == -1)
+        {
+            hashMap[key] = value;
+        }
+        else
+        {
+            this->remove(key);
+            hashMap[key] = value;
+        }
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    int get(int key) {
+        auto it = hashMap.find(key);
+        if(it == hashMap.end())
+            return -1;
+        return it->second;
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    void remove(int key) {
+        hashMap.erase(key);
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */

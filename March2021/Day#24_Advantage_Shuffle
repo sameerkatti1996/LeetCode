@@ -1,0 +1,56 @@
+//LOGIC:
+//=================================
+//Sort A
+//Get a value from A that is just higher than the element in B
+//If there is no such element, get the least element
+//New array will have maximized the advantage
+
+class Solution {
+public:
+    vector<int> advantageCount(vector<int>& A, vector<int>& B) {
+        if(A.size() == 1)
+            return A;
+        
+        vector<int> copy_A;
+        
+        sort(A.begin(), A.end());
+        
+        int j = 0, left, right, mid, ind;
+        
+        for(int i=0; i< B.size(); i++)
+        {
+            left = 0;
+            right = A.size()-1;
+            ind = 0;
+            
+            //Get an element in A that is just higher than B[i]
+            //If no such element exists, get least value i.e. ind = 0
+            while(left <= right)    
+            {
+                mid = (left + right)/2;
+                
+                if(mid >= 1){
+                    if(A[mid] > B[i] && A[mid-1] <= B[i])
+                        ind = mid;
+                }
+                else if(mid == 0){
+                    if(A[mid] > B[i])
+                        ind = mid;
+                }
+                
+                if(A[mid] > B[i])
+                    right = mid - 1;
+                else
+                    left = mid + 1;
+            }
+            
+            //Push element to new array
+            copy_A.push_back(A[ind]);
+            
+            //Delete element from A
+            A.erase(A.begin() + ind);
+        }
+        
+        return copy_A;
+    }
+};

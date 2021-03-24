@@ -1,0 +1,72 @@
+class Solution {
+public:
+    // Function to check if character is vowel or not 
+    static bool IsVowel(char ch) 
+    { 
+        return (ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U' || ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'); 
+    } 
+    
+    vector<string> spellchecker(vector<string>& wordlist, vector<string>& queries) {
+        string query, word;
+        map<string, string> cap, vow, words;
+        
+        
+        
+        for(int i=0; i<wordlist.size(); i++)
+        {
+            word = wordlist[i];
+            
+            //Map to find if exact word is found
+            words.insert({wordlist[i], wordlist[i]});
+            
+            //Map to find capitalization spelling mistakes
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+            cap.insert({word, wordlist[i]});
+            
+            //Map to find vowel errors
+            replace_if(word.begin(), word.end(), IsVowel, '#');
+            vow.insert({word, wordlist[i]});
+        }
+        
+        map<string, string>:: iterator it;
+        for(it=vow.begin(); it!=vow.end(); it++)
+        {
+            cout << it->first << ":" << it->second << endl;
+        }
+        
+        
+        for(int i=0; i<queries.size(); i++)
+        {
+            query = queries[i];
+            
+            //Do we have exact match in wordlist?
+            if(words.find(query)!= words.end())
+            {
+                queries[i] = words[query];
+                continue;
+            }
+            
+            //Convert to all lower and see if we have any match in map: cap.
+            //If we have, then we can rearrange the query and make sure the query can be obtained
+            transform(query.begin(), query.end(), query.begin(), ::tolower);
+            if(cap.find(query) != cap.end())
+            {
+                queries[i] = cap[query];
+                continue;
+            }
+
+            //Convert all vowels to # and see if we have match in map: vow.
+            //If we have, then we can rearrange the query and obtain a word from wordlist
+            replace_if(query.begin(), query.end(), IsVowel, '#');
+            if(vow.find(query) != vow.end())
+            {
+                queries[i] = vow[query];
+                continue;
+            }
+            
+            //No match found
+            queries[i] = "";  
+        }
+        return queries;
+    }
+};

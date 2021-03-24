@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        int MOD = 1e9 + 7;
+        
+        sort(arr.begin(), arr.end());
+        
+        map<long, long> dp;
+        long result = 0;
+        
+        for(int i=0; i<arr.size(); ++i)
+        {
+            dp[arr[i]] = 1;
+                for (auto it = dp.begin(); it != dp.end(); ++it) {
+                    //If we have any number that divides arr[i]
+                    //and the factor exists, then we add a key for the number
+                    //in dp
+                    if (arr[i] % it->first == 0 && dp.count(arr[i]/it->first)) {
+                        dp[arr[i]] = (dp[arr[i]] + it->second * dp[arr[i]/it->first]) % MOD;
+                    }
+                }
+                result = (result + dp[arr[i]]) % MOD;
+        }
+        return result;
+        
+    }
+};
