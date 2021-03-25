@@ -1,0 +1,87 @@
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        int l = matrix.size();
+        if(l==0)
+            return {};
+        
+        int b = matrix[0].size();
+        
+        //Two 2-D vectors to identify cells from where the water can flow to two oceans
+        vector<vector<int>> atlantic(matrix.size(), vector<int>(matrix[0].size(), 0));
+        vector<vector<int>> pacific(matrix.size(), vector<int>(matrix[0].size(), 0));
+        
+        vector<int> cell;
+        vector<vector<int>> res;
+        
+        int x, y;
+        queue<vector<int>> q;
+
+        //BFS
+        //Push all the cells touching Pacific - water can reach pacific from these directly
+        
+        for(int i=0; i<l; i++)
+            q.push({i, 0});
+        for(int i=0; i<b; i++)
+            q.push({0, i});
+        
+        //Using BFS, find all the cells where water can reach the Pacific
+        while(q.size() != 0)
+        {
+            cell = q.front();
+            q.pop();
+            
+            x = cell[0];
+            y = cell[1];
+            
+            if(pacific[x][y] == 1)
+                continue;
+            
+            pacific[x][y] = 1;
+            
+            if(x>=1 && matrix[x][y] <= matrix[x-1][y] && pacific[x-1][y] == 0)
+                q.push({x-1, y});
+            if(y>=1 && matrix[x][y] <= matrix[x][y-1] && pacific[x][y-1] == 0)
+                q.push({x, y-1});
+            if(x<l-1 && matrix[x][y] <= matrix[x+1][y] && pacific[x+1][y] == 0)
+                q.push({x+1, y});
+            if(y<b-1 && matrix[x][y] <= matrix[x][y+1] && pacific[x][y+1] == 0)
+                q.push({x, y+1});
+        }
+        
+        //Push all cells adjacent to Atlantic
+        for(int i=0; i<l; i++)
+            q.push({i, b-1});
+        for(int i=0; i<b; i++)
+            q.push({l-1, i});
+        
+        //Using BFS, find all the cells water can reach Atlantic
+        while(q.size() != 0)
+        {
+            cell = q.front();
+            q.pop();
+            
+            x = cell[0];
+            y = cell[1];
+            
+            if(atlantic[x][y] == 1)
+                continue;
+            
+            //If water can reach both Atlantic and Pacific, add that cell to result
+            atlantic[x][y] = 1;
+            if(pacific[x][y] == 1)
+                res.push_back({x, y});
+            
+            if(x>=1 && matrix[x][y] <= matrix[x-1][y] && atlantic[x-1][y] == 0)
+                q.push({x-1, y});
+            if(y>=1 && matrix[x][y] <= matrix[x][y-1] && atlantic[x][y-1] == 0)
+                q.push({x, y-1});
+            if(x<l-1 && matrix[x][y] <= matrix[x+1][y] && atlantic[x+1][y] == 0)
+                q.push({x+1, y});
+            if(y<b-1 && matrix[x][y] <= matrix[x][y+1] && atlantic[x][y+1] == 0)
+                q.push({x, y+1});
+        }
+        
+        return res;
+    }
+};
