@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string originalDigits(string s) {
+        vector<int> count(26, 0), num(10, 0);
+        string result = "";
+        
+        for(char c:s)
+            count[c-97]++;
+        
+        //Get count of numbers that have unique letters
+        num[0] = count['z'-97];
+        num[2] = count['w'-97];
+        num[4] = count['u'-97];
+        num[6] = count['x'-97];
+        num[8] = count['g'-97];
+        
+        //Get count of remaining numbers
+        num[7] = count['s'-97] - num[6];
+        num[5] = count['f'-97] - num[4];
+        num[3] = count['h'-97] - num[8];
+        num[1] = count['o'-97] - num[0] - num[2] - num[4];
+        num[9] = count['i'-97] - num[5] - num[6] - num[8];
+        
+        for(int i=0; i<10; i++){
+            string c = to_string(i);
+            for(int j=0; j<num[i]; j++)
+                result += c;
+        }
+        
+        return result;
+    }
+};
